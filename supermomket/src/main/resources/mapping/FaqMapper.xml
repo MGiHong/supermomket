@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="FaqDAO">
+
+	<select id="searchfaq" resultType="faq">
+		SELECT * FROM FAQ WHERE 1=1
+		AND FAQ_CLASS LIKE CONCAT('%',#{searchKeyword},'%')
+		ORDER BY FAQ_NO DESC
+		limit #{listcnt} offset #{start}
+	</select>
+
+
+	<select id="getFaqList" resultType="faq">
+		SELECT * FROM FAQ WHERE 1=1
+		<if test="searchCondition == 'CLASS' "> AND FAQ_CLASS LIKE CONCAT('%',#{searchKeyword},'%')</if>
+		<if test="searchCondition == 'TITLE' "> AND FAQ_Q LIKE CONCAT('%',#{searchKeyword},'%')</if>
+		<if test="searchCondition == 'CONTENT' "> AND FAQ_A LIKE CONCAT('%',#{searchKeyword},'%')</if>
+		ORDER BY FAQ_NO DESC
+		limit #{listcnt} offset #{start}
+	</select>
+
+	<select id="countFaq" resultType="int">
+		SELECT COUNT(*) FROM FAQ WHERE 1=1
+		<if test="searchCondition == 'CLASS' "> AND FAQ_CLASS LIKE CONCAT('%',#{searchKeyword},'%') </if>
+		<if test="searchCondition == 'TITLE' "> AND FAQ_Q LIKE CONCAT('%',#{searchKeyword},'%') </if>
+		<if test="searchCondition == 'CONTENT' "> AND FAQ_A LIKE CONCAT('%',#{searchKeyword},'%') </if>
+	</select>
+	<select id="countFaqclass" resultType="int">
+		SELECT COUNT(*) FROM FAQ WHERE 1=1
+		AND FAQ_CLASS LIKE CONCAT('%',#{searchKeyword},'%')
+	</select>
+
+	<select id="getFaq" resultType="faq">
+		SELECT * FROM FAQ WHERE
+		FAQ_NO=#{faq_no}
+	</select>
+
+	<insert id="insertfaq">
+		INSERT INTO FAQ (FAQ_Q, FAQ_A,FAQ_CLASS)
+		VALUES(#{faq_q},#{faq_a},#{faq_class})
+	</insert>
+
+	<update id="updatefaq">
+		UPDATE FAQ
+		SET
+		FAQ_Q=#{faq_q},
+		FAQ_A=#{faq_a}
+		WHERE
+		FAQ_NO = #{faq_no}
+	</update>
+
+	<delete id="deletefaq">
+		DELETE FROM FAQ WHERE
+		FAQ_NO = #{faq_no}
+	</delete>
+
+
+
+
+</mapper>

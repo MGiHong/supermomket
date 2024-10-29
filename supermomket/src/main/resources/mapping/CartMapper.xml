@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CartDAO">
+
+	<select id="getcart"  resultType="cart">
+		SELECT
+		*
+		FROM cart
+		WHERE p_no = #{p_no}
+	</select>
+
+
+	<select id="getcartList" resultType="cart">
+		SELECT * FROM cart
+	</select>
+
+	<insert id="insertcart">
+		INSERT INTO CART (P_NO, P_CALLNO, P_COUNT ,P_NAME,P_PRICE,P_IMG,C_TOTAL)
+		VALUES(#{p_no},#{p_callno},#{p_count},#{p_name},#{p_price},#{p_img},#{p_total}*#{p_price})
+	</insert>
+	
+	<select id="carttotal" resultType="cart">
+	select sum(p_total) C_total from cart 
+	</select>
+	
+	
+	<update id="updatecart">
+		UPDATE cart
+		SET
+		c_total=#{p_count}*#{p_price}
+		WHERE
+		p_no = #{p_no}
+	</update>
+
+	<delete id="deletcart">
+		DELETE FROM cart WHERE
+		p_no = #{p_no}
+	</delete>
+
+</mapper>
